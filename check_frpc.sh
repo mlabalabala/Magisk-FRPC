@@ -20,12 +20,12 @@ running_start() {
   [ "$?" -ne 0 ] && return
 
   # 检查配置文件
-  if [ ! -f "${DATADIR}/frpc/frpc.ini" ]; then
-    sed -i -e "/^CHECK_FILE_STATUS=/c CHECK_FILE_STATUS=Android\/frpc目录下未找到frpc\.ini文件！" \
+  if [ ! -f "${DATADIR}/frpc/frpc.toml" ]; then
+    sed -i -e "/^CHECK_FILE_STATUS=/c CHECK_FILE_STATUS=Android\/frpc目录下未找到frpc\.toml文件！" \
       -e "/^RUNNING_STATUS=/c RUNNING_STATUS=FRPC未运行！" "${MODDIR}/files/status.conf"
       return 8
   fi
-  _check_file_status="$(stat -c %Y ${DATADIR}/frpc/frpc.ini)"
+  _check_file_status="$(stat -c %Y ${DATADIR}/frpc/frpc.toml)"
   sed -i "/^FILE_STATUS=/c FILE_STATUS=${_check_file_status}" "${MODDIR}/files/status.conf"
 
   # 检索配置文件是否正确
@@ -50,7 +50,7 @@ running_start() {
   fi
 
   # 检查FRPC穿透了多少服务（不完全正确，例如xtcp方式无记录）
-  _frpc_admin_port=$(get_parameters admin_port "${DATADIR}/frpc/frpc.ini")
+  _frpc_admin_port=$(get_parameters admin_port "${DATADIR}/frpc/frpc.toml")
   if [ "${_frpc_admin_port}" -ge 1 ] && [ "${_frpc_admin_port}" -le 65535 ]; then
     _running_num=$(sh ${MODDIR}/run_frpc.sh status)
     sleep 1
@@ -69,13 +69,13 @@ check_reload() {
   battery_electricity_check
   [ $? -ne 0 ] && return
 
-  if [ ! -f ${DATADIR}/frpc/frpc.ini ]; then
-    sed -i "/^CHECK_FILE_STATUS=/c CHECK_FILE_STATUS=Android\/frpc目录下未找到frpc\.ini文件！（已保持当前运行状态）" "${MODDIR}/files/status.conf"
+  if [ ! -f ${DATADIR}/frpc/frpc.toml ]; then
+    sed -i "/^CHECK_FILE_STATUS=/c CHECK_FILE_STATUS=Android\/frpc目录下未找到frpc\.toml文件！（已保持当前运行状态）" "${MODDIR}/files/status.conf"
     return 13
   fi
 
   # 时间戳若不等，文件被修改，执行重载操作
-  _check_new_file_status="$(stat -c %Y ${DATADIR}/frpc/frpc.ini)"
+  _check_new_file_status="$(stat -c %Y ${DATADIR}/frpc/frpc.toml)"
   if [ "${FILE_STATUS}" != "${_check_new_file_status}" ]; then
     sh ${MODDIR}/run_frpc.sh verify
     if [ "$?" -ne 0 ]; then

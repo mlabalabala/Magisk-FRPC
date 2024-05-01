@@ -12,11 +12,11 @@ If your terminal device uses WEB service or other services need remote access, t
 
 ## Usage
 
-After the module is installed, please browse and edit the frpc.ini configuration file in the Android/frpc directory. Then restart the device, after the device is running, it will run the FRPC daemon on your device.
+After the module is installed, please browse and edit the frpc.toml configuration file in the Android/frpc directory. Then restart the device, after the device is running, it will run the FRPC daemon on your device.
 
 ---
 
-模块安装完成后，请到 Android/frpc 目录下浏览并编辑 frpc.ini 配置文件文件。然后重启设备，设备运行后，会在你的设备上运行 FRPC 守护程序。
+模块安装完成后，请到 Android/frpc 目录下浏览并编辑 frpc.toml 配置文件文件。然后重启设备，设备运行后，会在你的设备上运行 FRPC 守护程序。
 
 ## About
 

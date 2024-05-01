@@ -1,6 +1,6 @@
 SKIPUNZIP=1
 
-DATADIR='/sdcard/Android'
+DATADIR='/sdcard'
 VERSION='v3.1.1'
 VERSIONCODE='20230127'
 
@@ -106,15 +106,6 @@ check_arch() {
   arm64)
     F_ARCH=${ARCH}
     ;;
-  arm)
-    F_ARCH=${ARCH}
-    ;;
-  x64)
-    F_ARCH=x86_64
-    ;;
-  x86)
-    F_ARCH=${ARCH}
-    ;;
   *)
     customize_print "- 不支持的架构: ${ARCH}"
     customize_print " "
@@ -159,8 +150,8 @@ if [ "$(get_choose)" -eq 0 ]; then
   extract "${ZIPFILE}" "check_frpc.sh" "${MODPATH}"
   extract "${ZIPFILE}" "update_log.md" "${MODPATH}"
   extract "${ZIPFILE}" "files/status.conf" "${MODPATH}/files" true
-  extract "${ZIPFILE}" "files/frpc.ini" "${MODPATH}/files" true
-  extract "${ZIPFILE}" "files/frpc_full.ini" "${MODPATH}/files" true
+  extract "${ZIPFILE}" "files/frpc.toml" "${MODPATH}/files" true
+  extract "${ZIPFILE}" "files/frpc_full.toml" "${MODPATH}/files" true
   customize_print "- 文件释放完成，正在设置权限!"
   set_perm_recursive ${MODPATH} 0 0 0755 0644
   set_perm_recursive ${MODPATH}/files/bin 0 0 0755 0755
@@ -183,7 +174,7 @@ if [ "$(get_choose)" -eq 0 ]; then
     customize_print "- 设备息屏将不检测配置文件状态!"
     customize_print " "
   fi
-  if [ -f ${DATADIR}/frpc/frpc.ini ]; then
+  if [ -f ${DATADIR}/frpc/frpc.toml ]; then
     cp -af ${MODPATH}/update_log.md ${DATADIR}/frpc/
     customize_print "(?) 存在旧配置文件，是否保留原配置文件？(请选择)"
     customize_print "- 按音量键＋: 保留"
@@ -191,9 +182,9 @@ if [ "$(get_choose)" -eq 0 ]; then
     if [ "$(get_choose)" -eq 1 ]; then
       customize_print "- 已选择替换备份原配置文件!"
       now_date=$(date "+%Y%m%d%H%M%S")
-      mv ${DATADIR}/frpc/frpc.ini ${DATADIR}/frpc/backup_${now_date}-frpc.ini
-      customize_print "- 已备份保存为 Android/frpc/backup_${now_date}-frpc.ini"
-      cp -af ${MODPATH}/files/frpc.ini ${DATADIR}/frpc/
+      mv ${DATADIR}/frpc/frpc.toml ${DATADIR}/frpc/backup_${now_date}-frpc.toml
+      customize_print "- 已备份保存为 Android/frpc/backup_${now_date}-frpc.toml"
+      cp -af ${MODPATH}/files/frpc.toml ${DATADIR}/frpc/
       customize_print "- 已创建新文件!"
       customize_print " "
     else
@@ -210,9 +201,9 @@ if [ "$(get_choose)" -eq 0 ]; then
       customize_print "- 创建日志目录 frpc/logs 完成!"
       customize_print " "
     fi
-    cp -af ${MODPATH}/files/frpc*.ini ${MODPATH}/update_log.md ${DATADIR}/frpc/
+    cp -af ${MODPATH}/files/frpc*.toml ${MODPATH}/update_log.md ${DATADIR}/frpc/
     customize_print "- 已创建配置文件!"
-    customize_print "- 请前往 ${DATADIR}/frpc 目录查看 frpc.ini 文件内使用说明并配置文件!"
+    customize_print "- 请前往 ${DATADIR}/frpc 目录查看 frpc.toml 文件内使用说明并配置文件!"
     customize_print "- 然后进行设备重启即可!"
   fi
 else

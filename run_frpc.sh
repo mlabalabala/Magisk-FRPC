@@ -4,20 +4,20 @@ MODDIR="$(dirname $(readlink -f "$0"))"
 . ${MODDIR}/files/status.conf
 
 start_frpc() {
-  nohup ${MODDIR}/files/bin/frpc-${F_ARCH} -c ${DATADIR}/frpc/frpc.ini >/dev/null 2>&1 &
+  nohup ${MODDIR}/files/bin/frpc-${F_ARCH} -c ${DATADIR}/frpc/frpc.toml >/dev/null 2>&1 &
   echo "$!" >${MODDIR}/files/frpc_run.pid
 }
 
 verify_frpc() {
-  ${MODDIR}/files/bin/frpc-${F_ARCH} verify -c ${DATADIR}/frpc/frpc.ini >/dev/null 2>&1
+  ${MODDIR}/files/bin/frpc-${F_ARCH} verify -c ${DATADIR}/frpc/frpc.toml >/dev/null 2>&1
 }
 
 reload_frpc() {
-  ${MODDIR}/files/bin/frpc-${F_ARCH} reload -c ${DATADIR}/frpc/frpc.ini
+  ${MODDIR}/files/bin/frpc-${F_ARCH} reload -c ${DATADIR}/frpc/frpc.toml
 }
 
 work_status() {
-  ${MODDIR}/files/bin/frpc-${F_ARCH} status -c ${DATADIR}/frpc/frpc.ini | grep "running" | wc -l
+  ${MODDIR}/files/bin/frpc-${F_ARCH} status -c ${DATADIR}/frpc/frpc.toml | grep "running" | wc -l
 }
 
 if [ $# -ne 0 ]; then
